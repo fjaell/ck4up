@@ -1,0 +1,12 @@
+Thanks go to the following persons:
+
+- Simone Rota, who's RFC inspired me to write this utility
+- Johannnes Winkelman for testing and many suggestions
+- Matt Housh for translating the man page into readable English
+- Jukka Heino for suggesting passive mode option for ftp
+- Per Liden for testing and many suggestions
+- Tilman Sauerbeck for many useful patches
+- Sam Hall for a patch to support HTTPS
+- Jose V Beneyto for testing and many suggestions
+- Ciprian Dorin for the initial proxy patch
+

@@ -1,0 +1,143 @@
+.TH ck4up 1 "Dec 23 2014" "ck4up 1.4" ""
+.SH NAME
+ck4up \- Check for Updates, a utility to monitor web pages for updates 
+.SH SYNOPSIS
+\fBck4up [options] [<regexp> ...]\fP
+.SH DESCRIPTION
+\fBck4up\fP is a small command-line utility, written in ruby, primarily 
+intended for CRUX ports maintainers to watch http and ftp sites for 
+updates, but may also be useful for others.
+
+\fBck4up\fP scans through a configuration file, fetches the listed URLs 
+from the web, computes the md5sum of the page, and compares the value with
+one stored in a gdbm database. If both differ a message will be written
+to the standard output.
+
+To improve performance, \fBck4up\fP is multi-threaded. A configurable
+number of threads fetches pages in parallel. The default setting is a
+maximum of 20 threads and can be changed at the top of the script
+(variable Threads_max).
+
+Regular expressions can be applied to each page in the event that \fBck4up\fP
+produces repetitive diff messages. For example, if daily snapshots and
+a web counter are on the same page.
+
+To simplify maintenance of the configuration file, a kind of 
+macro-expansion can be used.
+
+.SH OPTIONS
+.TP
+.B -d, --debug
+Run ck4up in debug mode. All fetched pages will be written to the
+standard output. This is especially useful when combined with a
+regexp to limit the number of pages to process.
+.TP
+.B -k, --keep
+Keep md5 values, don't update the database.  
+.TP
+.B -v, --verbose
+Verbose mode. Print a message also for unchanged pages.
+.TP
+.B -h, --help
+Print a short help message and exit.
+.TP
+.B -p, --parseonly
+Parse configuration file, expand macros and print lines matched by <regexp>. 
+Do not fetch any remote data.
+.TP
+.B -c, --cleandb
+Removes unused entries from the ck4up database.
+.TP
+.B -f <file>, --config <file>
+Use alternative configuration from <file> instead of the default 
+\fI ~/.ck4up/ck4up.conf\fP. 
+ck4up creates a database with the same full pathname but the extension
+replaced by .dbm.
+.TP
+.B <regexp>
+Process only configuration-lines matching <regexp>. If more than one
+expression is given, all of them are or'ed to build a regular expression.
+
+.SH CONFIGURATION
+
+The configuration file for ck4up contains lines with macro
+definitions and lines defining URLs to check for updates.
+Blank lines and lines beginning with a pound-sign, which are 
+considered comments, are ignored. Spaces at the beginning of
+definition-lines are not allowed.
+.br
+The default location for the \fBck4up\fP configuration file 
+is 
+\fI~/.ck4up/ck4up.conf\fP.
+
+
+.B <name>  <type>  <url>  [<regexp>]
+
+Lines starting with a valid character in the range [a-zA-Z] are URL lines, 
+defining the web-pages you would like to check for updates.
+<name> is a symbolic name for the URL, md5 is the only valid 
+entry for <type> at the moment, <url> is the URL of the 
+web-site, <regexp> is an optionally extended regular expression.
+Don't use spaces in regexps, but \\s instead.
+
+Examples:
+
+.br
+apache  md5  http://www.apache.de/dist/httpd/    httpd-2[0-9.]*
+.br
+uw-imap md5  ftp://ftp.cac.washington.edu/imap/ 
+
+
+.B <@[A-Za-z0-9_]*@>  <string>  [<string>]
+
+Lines starting with @ define macros for later use. 
+A system macro @NAME@, which is the <name> of the URL line, can 
+be used in other macro definitions.
+This is handy if many URLs follow a common syntax. See
+the examples for @GNU@ below. 
+Macro expansion is done recursively, allowing macros to be nested. 
+See the @SF@ example which works for many but not all sourceforge 
+project pages.
+
+.SH EXAMPLE
+
+Example of a configuration file containing URL and macro
+definitions:
+
+@TAR@     @NAME@-.*?\.tar\.[bgx]z2?
+.br
+
+@SUN@     http://mirrors.sunsite.dk
+.br
+@GNU@     http://ftp.gnu.org/gnu/@NAME@   @TAR@
+.br
+
+@SF_RE@   /files/@NAME@/[.0-9]+|@TAR@
+.br
+@SF@      http://sourceforge.net/projects/@NAME@/files/@NAME@  @SF_RE@
+.br
+
+apache      md5  http://www.apache.de/dist/httpd/    httpd-2[0-9.]*
+.br
+exim        md5  @SUN@/exim/exim/exim4/              @TAR@
+.br
+gawk        md5  @GNU@
+.br
+hdparm      md5  @SF@
+.br
+uw-imap     md5  ftp://ftp.cac.washington.edu/imap/  imap-200.?[a-z]
+
+
+.SH PROXY
+
+If a environment variable HTTP_PROXY or http_proxy is set with a valid URI,
+e.g. http://server.localnet:3128/, \fBck4up\fP make use of the proxy for
+the HTTP and HTTPS protocols.
+
+.SH FILES
+\fI~/.ck4up/ck4up.conf\fP - configuration-file
+.br
+\fI~/.ck4up/ck4up.dbm\fP - gdbm database to store the md5 hashes
+
+.SH AUTHOR
+Juergen Daubert <jue@jue.li>

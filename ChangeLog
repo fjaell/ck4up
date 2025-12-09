@@ -1,0 +1,106 @@
+*** ck4up Revision History ***
+
+* 1.4 Released 2014-12-23
+    - fix redirect of http to https pages
+    - update example ck4up.conf
+
+* 1.3 Released 2014-05-08
+    - follow http redirects only if response scheme is http.
+      Bug reported by Daryl Fonseca-Holt.
+
+* 1.2  Released 2009-04-14
+    - Minor compatibility fixes for ruby 1.9
+    - Proxy support, ck4up use the proxy server, set by the
+      environment variable HTTP_PROXY, for the HTTP and HTTPS
+      protocols.
+      Suggested and initial patch by Ciprian Dorin.
+    - Redirection isn't optional any more but used always.
+
+* 1.1  Released 2009-02-08
+    - New option -p or --parseonly to parse the configuration
+      file, expand macros and print the result without fetching
+      any page. Useful for debugging the config file.
+    - catch recursion errors in configuration file.
+    - use '/usr/bin/env ruby' as shebang line, portability fixes
+      for Makefile. Suggested by Jose V Beneyto.
+    - Fixed Sourceforge example in the man-page again.
+    - Minor code cleanup.
+
+* 1.0  Released 2008-04-18
+    - Follow HTTP redirects, configurable via a new variable
+      Follow_redirects. Enabled by default.
+      Patch by Tilman Sauerbeck.
+    - Enable getting pages via HTTPS, patch by Sam Hall.
+    - Changed option -f or --config to accept the full path
+      to the configuration file, file extension required.
+      Default is still ~/.ck4up/ck4up.conf.
+      Suggested by Jose V Beneyto.
+    - Fixed Sourceforge example in the man-page.
+
+* 0.2.4 Released 2007-10-25
+    - Remove duplicated hits from result. Incompatible
+      change, because the result differs for many sites.
+      Patch by Tilman Sauerbeck
+    - Use fixed user/url for ftp logins.
+      Patch by Tilman Sauerbeck 
+    - Bugfix: flag after precision in printf call.
+    - Bugfix: don't try to write empty keys to the database 
+      in function clean_db.
+    - Sync stuff is not necessary, removed.
+
+* 0.2.3 Released 2006-05-21
+    - New option -f or --config to use an alternative config
+      file. Without that option defaults to ck4up.conf which
+      is the old behaviour.
+    - Error messages are now printed to STDERR, all other to
+      STDOUT.
+
+* 0.2.2 Released 2005-10-01
+    - New entries in the config file will be shown as new
+      and not as diff, which was annoying. 
+      Patch by Johannes Winkelmann 
+    - New option -c or --cleandb to remove no longer used
+      entries from the ck4up database.
+      Patch by Johannes Winkelmann
+
+* 0.2.1 Released 2005-05-08
+    - Add a timeout block around the ftp related part of
+      fetch_page(). Necessary if a ftp server is resolvable
+      but do not respond to queries. Tunable via the global
+      Ftp_time variable, default is 20 seconds.
+
+* 0.2.0 Released 2005-02-20
+    - Use ruby resolver library to get multi-threading even 
+      for DNS queries. Nice speed improvement.
+    - Use URI instead of regex in fetch_page to detect uri 
+      classes.
+    - Fix thread joining. In some rare circumstance ck4up
+      doesn't finish program execution.
+    - Use GetoptLong to parse commandline options. Now long
+      options are available and options can be combined.
+    - Join commandline arguments with '|' to build a or'ed
+      regular expression.
+    - Move test of Basedir into a function.
+    - Use sync library instead of Thread.critical
+
+* 0.1.10 Released 2005-02-06
+    - Add option to use passive mode with ftp, which is the
+      default now. Can be changed with the Ftp_passiv variable.
+      Patch by Jukka Heino
+    - Concat the output of the ftp list command with newlines,
+      which simplifies parsing with regular expressions.
+      Patch by Per Liden
+    - Allow starting capital letters in the program names.
+      Patch by Per Liden
+
+* 0.1.9 Released 2004-07-28
+    - raise an error if the result of a query is empty
+
+* 0.1.8 Released 2004-06-05
+    - No code changes
+    - Adjust man page and sample ck4up.config for the changed 
+      behaviour of the sourceforge mirrors
+
+* 0.1.0-0.1.7
+    - No change log was maintained for this releases
+
