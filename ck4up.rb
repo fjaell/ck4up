@@ -2,7 +2,7 @@
 #
 # ck4up
 # 
-# Copyright (c) Juergen Daubert <jue@jue.li>
+# Copyright (c) Juergen Daubert <jue@crux.nu>
 # Version 1.4  2014-12-23
 #
 # This program is free software; you can redistribute it and/or modify
