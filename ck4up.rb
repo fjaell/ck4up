@@ -3,7 +3,7 @@
 # ck4up
 # 
 # Copyright (c) Juergen Daubert <jue@crux.nu>
-# Version 1.4  2014-12-23
+# Version 1.4.1  2026-01-03
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,13 +21,12 @@
 # USA.
 #
 
-require 'net/https'
+require 'net/http'
 require 'net/ftp'
 require 'digest'
 require 'gdbm'
 require 'getoptlong'
 require 'timeout'
-require 'resolv-replace'
 
 
 DefaultConfig = ENV['HOME'] + '/.ck4up/ck4up.conf'
