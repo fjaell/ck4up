@@ -1,4 +1,4 @@
-.TH ck4up 1 "Sep 23 2026" "ck4up 1.4.1" ""
+.TH ck4up 1 "Sep 29 2026" "ck4up 1.4.1" ""
 .SH NAME
 ck4up \- Check for Updates, a utility to monitor web pages for updates 
 .SH SYNOPSIS
@@ -143,7 +143,39 @@ gawk        md5  @GNU@
 hdparm      md5  @SF@
 .br
 uw-imap     md5  ftp://ftp.cac.washington.edu/imap/  imap-200.?[a-z]
+.br
 
+For github, gitlab, sourceforge, codeberg, and various other "forge"
+sites, there's generally an Atom or RSS feed for each project. Generally,
+the parts of Atom files you're interested in will be \fB<id>\fR tags,
+and RSS files use \fB<link>\fR tags.
+
+.nf
+atari800    md5  https://github.com/atari800/atari800/tags.atom      <id>.*</id>
+.br
+sdltrs      md5  https://gitlab.com/jengun/sdltrs/-/tags?format=atom <id>.*</id>
+.br
+vice-emu    md5  https://sourceforge.net/projects/vice-emu/rss.xml   <link>.*</link>
+.br
+gumbo-parser md5  https://codeberg.org/gumbo-parser/gumbo-parser.rss <link>.*</link>
+.br
+
+.fi
+Using Atom/RSS feeds saves bandwidth, vs. pulling in the full HTML
+of the project's "tags" or "releases" page. For the atari800 github
+project, at the time of this writing, the tags/ HTML page is 248,946
+bytes, but tags.atom is only 5,267 (98% savings)!
+
+For gitlab, github, and codeberg, the URL includes the project owner's
+username. For sourceforge, the project name is enough, which means
+it's easy to write a macro for those:
+
+@SFRSS@    https://sourceforge.net/projects/@NAME@/rss.xml
+.br
+@L@        <link>.*</link>
+.br
+
+vice-emu     md5  @SFRSS@ @L@
 
 .SH PROXY
 
