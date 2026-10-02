@@ -1,4 +1,4 @@
-.TH ck4up 1 "Jan 03 2026" "ck4up 1.4.1" ""
+.TH ck4up 1 "Sep 23 2026" "ck4up 1.4.1" ""
 .SH NAME
 ck4up \- Check for Updates, a utility to monitor web pages for updates 
 .SH SYNOPSIS
@@ -48,6 +48,12 @@ Do not fetch any remote data.
 .B -c, --cleandb
 Removes unused entries from the ck4up database.
 .TP
+.B -x, --exact
+Regexp arguments are used as exact matches for the names in
+the config file. Example: if you have definitions for both "st"
+and "vttest", the argument "st" normally matches both. Using
+-x avoids this (only "st" is matched).
+.TP
 .B -f <file>, --config <file>
 Use alternative configuration from <file> instead of the default 
 \fI ~/.ck4up/ck4up.conf\fP. 
@@ -78,7 +84,13 @@ defining the web-pages you would like to check for updates.
 <name> is a symbolic name for the URL, md5 is the only valid 
 entry for <type> at the moment, <url> is the URL of the 
 web-site, <regexp> is an optionally extended regular expression.
-Don't use spaces in regexps, but \\s instead.
+
+Don't use spaces in regexps, but \\s instead. Also, if you're
+using parentheses for alternation, use non-capturing ones:
+
+This is OK: (?:foo|bar)
+
+Don't use this: (foo|bar)
 
 Examples:
 

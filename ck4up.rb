@@ -65,6 +65,7 @@ def parse_options()
 			["--cleandb",   "-c", GetoptLong::NO_ARGUMENT],
 			["--help",      "-h", GetoptLong::NO_ARGUMENT],
 			["--parseonly", "-p", GetoptLong::NO_ARGUMENT],
+			["--exact",     "-x", GetoptLong::NO_ARGUMENT],
 			["--config",    "-f", GetoptLong::REQUIRED_ARGUMENT])
 		valid_options.each do |opt,arg|
 			case opt
@@ -73,6 +74,7 @@ def parse_options()
 				when "--verbose"   then options["verbose"] = true
 				when "--cleandb"   then options["cleandb"] = true
 				when "--parseonly" then options["parseonly"] = true
+				when "--exact"     then options["exact"] = true
 				when "--config"    then options["config"] = arg
 				when "--help"      then usage
 			end
@@ -321,6 +323,11 @@ def do_check()
 	threads.each { |t| t.join }
 end
 
+def mangle_argv()
+	ARGV.map! do |arg|
+		arg = "^" + arg + "\\s"
+	end
+end
 
 trap('INT') { puts; exit }
 
@@ -336,6 +343,9 @@ elsif Opts["parseonly"]
 	do_parse
 	exit
 else
+	if Opts["exact"]
+		mangle_argv
+	end
 	do_check
 end
 
