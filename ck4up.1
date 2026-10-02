@@ -54,6 +54,11 @@ the config file. Example: if you have definitions for both "st"
 and "vttest", the argument "st" normally matches both. Using
 -x avoids this (only "st" is matched).
 .TP
+.B -w, --warn
+If none of the regexp arguments match any lines in the config
+file, print a warning to that effect on stderr, and exit with
+non-zero status.
+.TP
 .B -f <file>, --config <file>
 Use alternative configuration from <file> instead of the default 
 \fI ~/.ck4up/ck4up.conf\fP. 

@@ -48,6 +48,8 @@ Options:
  -c,      --cleandb      clean unused keys from database
  -p,      --parseonly    process and print configuration file
  -v,      --verbose      verbose mode, show unchanged pages
+ -x,      --exact        treat arguments as exact matches
+ -w,      --warn         print warning if no arguments match
  -f file, --config file  use configuration from file, see ck4up(1)
  exp                     check only configuration lines matching exp  
 EOS
@@ -66,6 +68,7 @@ def parse_options()
 			["--help",      "-h", GetoptLong::NO_ARGUMENT],
 			["--parseonly", "-p", GetoptLong::NO_ARGUMENT],
 			["--exact",     "-x", GetoptLong::NO_ARGUMENT],
+			["--warn",      "-w", GetoptLong::NO_ARGUMENT],
 			["--config",    "-f", GetoptLong::REQUIRED_ARGUMENT])
 		valid_options.each do |opt,arg|
 			case opt
@@ -75,6 +78,7 @@ def parse_options()
 				when "--cleandb"   then options["cleandb"] = true
 				when "--parseonly" then options["parseonly"] = true
 				when "--exact"     then options["exact"] = true
+				when "--warn"      then options["warn"] = true
 				when "--config"    then options["config"] = arg
 				when "--help"      then usage
 			end
@@ -294,6 +298,7 @@ def do_cleanup()
 end
 
 def do_check()
+	matched = false
 	threads = []
 
 	Parser.new($Config).parse do |line|
@@ -301,6 +306,7 @@ def do_check()
 		while Thread.list.size > Threads_max; sleep 1; end
 
 		if line and line.index(/#{ARGV.join('|')}/)
+			matched = true
 			n,t,u,r = line.split
 			threads << Thread.new(n,t,u,r) do |name,type,url,regexp|
 				begin
@@ -321,6 +327,7 @@ def do_check()
 	end
 
 	threads.each { |t| t.join }
+	return matched
 end
 
 def mangle_argv()
@@ -346,7 +353,13 @@ else
 	if Opts["exact"]
 		mangle_argv
 	end
-	do_check
+	if not do_check
+		if Opts["warn"]
+			STDERR.print("Warning: no arguments matched the config file\n")
+			exit 1
+		end
+	end
+	exit 0
 end
 
 
