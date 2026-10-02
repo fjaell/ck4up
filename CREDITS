@@ -9,4 +9,4 @@ Thanks go to the following persons:
 - Sam Hall for a patch to support HTTPS
 - Jose V Beneyto for testing and many suggestions
 - Ciprian Dorin for the initial proxy patch
-
+- B.Watson for adding -x, -w options and additions to the man-page 

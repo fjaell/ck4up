@@ -1,8 +1,17 @@
 *** ck4up Revision History ***
 
+* 1.5  Released 2026-10-03
+    - New option -x to treat the args as fixed strings that must 
+      match exactly one of the names in the config file.
+    - New option -w prints a warning on stderr and return non-zero 
+      status if a argument don't match any rule.
+    - Added examples for checking github, gitlab, and codeberg 
+      repos (using RSS feeds) to the man-page.
+      All patches by B.Watson, many thanks.
+
 * 1.4.1 Released 2026-01-03
     - we don't require 'resolv-replace', this breaks
-	  ck4up with ruby 4.0.0 
+      ck4up with ruby 4.0.0
 
 * 1.4 Released 2014-12-23
     - fix redirect of http to https pages
