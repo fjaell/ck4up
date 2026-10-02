@@ -3,7 +3,7 @@
 # ck4up
 # 
 # Copyright (c) Juergen Daubert <jue@crux.nu>
-# Version 1.4.1  2026-01-03
+# Version 1.5 2026-09-29
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
